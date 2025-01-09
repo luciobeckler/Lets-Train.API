@@ -1,6 +1,7 @@
 ﻿using LetsTrain.API.Helper;
 using LetsTrain.API.Model;
 using LetsTrain.API.Model.Dto;
+using LetsTrain.API.Services.Exercicio;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,96 +11,76 @@ namespace LetsTrain.API.Controllers.Exercicio
     [ApiController]
     public class ExercicioController : ControllerBase
     {
-        private readonly LetsTrainDbContext _context;
+        private readonly IExercicioService _service;
 
-        public ExercicioController(LetsTrainDbContext context)
+
+        public ExercicioController(IExercicioService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Model.Exercicio>>> GetExercicios()
+        public async Task<ActionResult<IEnumerable<Model.Exercicio>>> ListarExercicios()
         {
-           return Ok(await _context.Exercicios.ToListAsync());
+            var exercicios = await _service.GetAllAsync();
+            return Ok(exercicios);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Model.Exercicio>> GetExercicios(int id)
+        public async Task<ActionResult<Model.Exercicio>> BuscarExercicioPorId(int id)
         {
-            var exercicio = await _context.Exercicios.FindAsync(id);
-
-            if (VerificacoesHelper.IsNull(exercicio))
-            {
+            var exercicio = await _service.GetByIdAsync(id);
+            if (exercicio == null)
                 return NotFound();
-            }
 
-            return exercicio;
+            return Ok(exercicio);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutExercicios(int id, ExercicioDto exercicioDto)
+        [HttpPost]
+        public async Task<ActionResult<ExercicioDto>> AdicionarExercicio(ExercicioDto exercicioDto)
         {
-            Model.Exercicio exercicio = new Model.Exercicio()
+            var exercicio = new Model.Exercicio()
             {
-                Id = id,
                 Nome = exercicioDto.Nome,
                 Repeticoes = exercicioDto.Repeticoes
             };
 
-            _context.Entry(exercicio).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ExercicioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            await _service.AddAsync(exercicio);
+            return Ok(exercicio);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ExercicioDto>> PostExercicios(ExercicioDto exercicioDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditarExercicio(int id, ExercicioDto exercicioDto)
         {
-            Model.Exercicio exercicio = new Model.Exercicio() 
+            try
             {
-                Nome = exercicioDto.Nome,
-                Repeticoes = exercicioDto.Repeticoes,
-            };
+                var exercicio = new Model.Exercicio()
+                {
+                    Nome = exercicioDto.Nome,
+                    Repeticoes = exercicioDto.Repeticoes
+                };
 
-            _context.Exercicios.Add(exercicio);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetExercicios", new { id = exercicio.Id }, exercicioDto);
+                await _service.UpdateAsync(id, exercicio);
+                return Ok(exercicio);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExercicios(int id)
         {
-            var exercicio = await _context.Exercicios.FindAsync(id);
-            if (exercicio == null)
+            try
+            {
+                await _service.DeleteAsync(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException) 
             {
                 return NotFound();
             }
-
-            _context.Exercicios.Remove(exercicio);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ExercicioExists(int id)
-        {
-            return _context.Exercicios.Any(e => e.Id == id);
         }
     }
 }

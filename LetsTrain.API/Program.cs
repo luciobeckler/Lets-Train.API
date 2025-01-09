@@ -1,4 +1,6 @@
 using LetsTrain.API.Model;
+using LetsTrain.API.Repositories.Exercicio;
+using LetsTrain.API.Repositories.Exercicios;
 using LetsTrain.API.Services.Exercicio;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -13,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IExercicioService, ExercicioService>();
+builder.Services.AddScoped<IExercicioRepository, ExercicioRepository>();
 
 builder.Services.AddDbContext<LetsTrainDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection"))
