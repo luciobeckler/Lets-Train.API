@@ -55,14 +55,14 @@ namespace LetsTrain.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DuracaoEmMinutos = table.Column<int>(type: "int", nullable: false),
-                    ProfessoresId = table.Column<int>(type: "int", nullable: true)
+                    ProfessorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Treinos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Treinos_Professores_ProfessoresId",
-                        column: x => x.ProfessoresId,
+                        name: "FK_Treinos_Professores_ProfessorId",
+                        column: x => x.ProfessorId,
                         principalTable: "Professores",
                         principalColumn: "Id");
                 });
@@ -105,20 +105,20 @@ namespace LetsTrain.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Repeticoes = table.Column<int>(type: "int", nullable: false),
-                    TreinosId = table.Column<int>(type: "int", nullable: true)
+                    TreinoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Exercicios", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Exercicios_Treinos_TreinosId",
-                        column: x => x.TreinosId,
+                        name: "FK_Exercicios_Treinos_TreinoId",
+                        column: x => x.TreinoId,
                         principalTable: "Treinos",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "AlunosAulas",
+                name: "AlunoAula",
                 columns: table => new
                 {
                     AlunosId = table.Column<int>(type: "int", nullable: false),
@@ -126,15 +126,15 @@ namespace LetsTrain.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AlunosAulas", x => new { x.AlunosId, x.AulasId });
+                    table.PrimaryKey("PK_AlunoAula", x => new { x.AlunosId, x.AulasId });
                     table.ForeignKey(
-                        name: "FK_AlunosAulas_Alunos_AlunosId",
+                        name: "FK_AlunoAula_Alunos_AlunosId",
                         column: x => x.AlunosId,
                         principalTable: "Alunos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AlunosAulas_Aulas_AulasId",
+                        name: "FK_AlunoAula_Aulas_AulasId",
                         column: x => x.AulasId,
                         principalTable: "Aulas",
                         principalColumn: "Id",
@@ -142,8 +142,8 @@ namespace LetsTrain.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AlunosAulas_AulasId",
-                table: "AlunosAulas",
+                name: "IX_AlunoAula_AulasId",
+                table: "AlunoAula",
                 column: "AulasId");
 
             migrationBuilder.CreateIndex(
@@ -157,21 +157,21 @@ namespace LetsTrain.API.Migrations
                 column: "TreinosId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercicios_TreinosId",
+                name: "IX_Exercicios_TreinoId",
                 table: "Exercicios",
-                column: "TreinosId");
+                column: "TreinoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Treinos_ProfessoresId",
+                name: "IX_Treinos_ProfessorId",
                 table: "Treinos",
-                column: "ProfessoresId");
+                column: "ProfessorId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AlunosAulas");
+                name: "AlunoAula");
 
             migrationBuilder.DropTable(
                 name: "Exercicios");

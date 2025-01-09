@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTrain.API.Migrations
 {
     [DbContext(typeof(LetsTrainDbContext))]
-    [Migration("20250108144557_InitialMigration")]
+    [Migration("20250109170746_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,12 +20,12 @@ namespace LetsTrain.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AlunosAulas", b =>
+            modelBuilder.Entity("AlunoAula", b =>
                 {
                     b.Property<int>("AlunosId")
                         .HasColumnType("int");
@@ -37,10 +37,10 @@ namespace LetsTrain.API.Migrations
 
                     b.HasIndex("AulasId");
 
-                    b.ToTable("AlunosAulas");
+                    b.ToTable("AlunoAula");
                 });
 
-            modelBuilder.Entity("Aulas", b =>
+            modelBuilder.Entity("Aula", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +76,7 @@ namespace LetsTrain.API.Migrations
                     b.ToTable("Aulas");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Alunos", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Aluno", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace LetsTrain.API.Migrations
                     b.ToTable("Alunos");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Exercicios", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Exercicio", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -130,17 +130,17 @@ namespace LetsTrain.API.Migrations
                     b.Property<int>("Repeticoes")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TreinosId")
+                    b.Property<int?>("TreinoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TreinosId");
+                    b.HasIndex("TreinoId");
 
                     b.ToTable("Exercicios");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Professores", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Professor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,7 +166,7 @@ namespace LetsTrain.API.Migrations
                     b.ToTable("Professores");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Treinos", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Treino", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -181,40 +181,40 @@ namespace LetsTrain.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfessoresId")
+                    b.Property<int?>("ProfessorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfessoresId");
+                    b.HasIndex("ProfessorId");
 
                     b.ToTable("Treinos");
                 });
 
-            modelBuilder.Entity("AlunosAulas", b =>
+            modelBuilder.Entity("AlunoAula", b =>
                 {
-                    b.HasOne("LetsTrain.API.Model.Alunos", null)
+                    b.HasOne("LetsTrain.API.Model.Aluno", null)
                         .WithMany()
                         .HasForeignKey("AlunosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Aulas", null)
+                    b.HasOne("Aula", null)
                         .WithMany()
                         .HasForeignKey("AulasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Aulas", b =>
+            modelBuilder.Entity("Aula", b =>
                 {
-                    b.HasOne("LetsTrain.API.Model.Professores", "Professores")
+                    b.HasOne("LetsTrain.API.Model.Professor", "Professores")
                         .WithMany("Aulas")
                         .HasForeignKey("ProfessoresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LetsTrain.API.Model.Treinos", "Treinos")
+                    b.HasOne("LetsTrain.API.Model.Treino", "Treinos")
                         .WithMany()
                         .HasForeignKey("TreinosId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -225,28 +225,28 @@ namespace LetsTrain.API.Migrations
                     b.Navigation("Treinos");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Exercicios", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Exercicio", b =>
                 {
-                    b.HasOne("LetsTrain.API.Model.Treinos", null)
+                    b.HasOne("LetsTrain.API.Model.Treino", null)
                         .WithMany("Exercicios")
-                        .HasForeignKey("TreinosId");
+                        .HasForeignKey("TreinoId");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Treinos", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Treino", b =>
                 {
-                    b.HasOne("LetsTrain.API.Model.Professores", null)
+                    b.HasOne("LetsTrain.API.Model.Professor", null)
                         .WithMany("Treinos")
-                        .HasForeignKey("ProfessoresId");
+                        .HasForeignKey("ProfessorId");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Professores", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Professor", b =>
                 {
                     b.Navigation("Aulas");
 
                     b.Navigation("Treinos");
                 });
 
-            modelBuilder.Entity("LetsTrain.API.Model.Treinos", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Treino", b =>
                 {
                     b.Navigation("Exercicios");
                 });

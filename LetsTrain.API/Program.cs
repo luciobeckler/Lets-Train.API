@@ -1,4 +1,5 @@
 using LetsTrain.API.Model;
+using LetsTrain.API.Services.Exercicio;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
@@ -10,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IExercicioService, ExercicioService>();
 
 builder.Services.AddDbContext<LetsTrainDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection"))
