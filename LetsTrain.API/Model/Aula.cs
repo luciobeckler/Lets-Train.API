@@ -1,6 +1,6 @@
 ﻿using LetsTrain.API.Model;
 
-public class Aulas
+public class Aula
 {
     public int Id { get; set; }
     public DateTime DataHora { get; set; }
@@ -9,9 +9,9 @@ public class Aulas
     public int? RecorrenciaEmDias { get; set; }
 
     // Navegação
-    public ICollection<Alunos> Alunos { get; set; } = null!;
-    public Treinos Treinos { get; set; } = null!;
-    public Professores Professores { get; set; } = null!;
+    public ICollection<Aluno> Alunos { get; set; } = null!;
+    public Treino Treinos { get; set; } = null!;
+    public Professor Professores { get; set; } = null!;
 
     
 }

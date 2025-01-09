@@ -1,6 +1,6 @@
 ﻿namespace LetsTrain.API.Model
 {
-    public class Professores
+    public class Professor
     {
         public int Id { get; set; }
         public string Nome { get; set; } = null!;
@@ -9,7 +9,7 @@
         public bool IsAtivo { get; set; }
 
         // Navegação
-        public ICollection<Aulas> Aulas { get; set; } = new List<Aulas>();
-        public ICollection<Treinos> Treinos { get; set; } = new List<Treinos>();
+        public ICollection<Aula> Aulas { get; set; } = new List<Aula>();
+        public ICollection<Treino> Treinos { get; set; } = new List<Treino>();
     }
 }

@@ -1,11 +1,8 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using LetsTrain.API.Helper;
+using LetsTrain.API.Model;
+using LetsTrain.API.Model.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LetsTrain.API.Model;
 
 namespace LetsTrain.API.Controllers.Exercicio
 {
@@ -20,38 +17,36 @@ namespace LetsTrain.API.Controllers.Exercicio
             _context = context;
         }
 
-        // GET: api/Exercicio
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exercicios>>> GetExercicios()
+        public async Task<ActionResult<IEnumerable<Model.Exercicio>>> GetExercicios()
         {
-            return await _context.Exercicios.ToListAsync();
+           return Ok(await _context.Exercicios.ToListAsync());
         }
 
-        // GET: api/Exercicio/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Exercicios>> GetExercicios(int id)
+        public async Task<ActionResult<Model.Exercicio>> GetExercicios(int id)
         {
-            var exercicios = await _context.Exercicios.FindAsync(id);
+            var exercicio = await _context.Exercicios.FindAsync(id);
 
-            if (exercicios == null)
+            if (VerificacoesHelper.IsNull(exercicio))
             {
                 return NotFound();
             }
 
-            return exercicios;
+            return exercicio;
         }
 
-        // PUT: api/Exercicio/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExercicios(int id, Exercicios exercicios)
+        public async Task<IActionResult> PutExercicios(int id, ExercicioDto exercicioDto)
         {
-            if (id != exercicios.Id)
+            Model.Exercicio exercicio = new Model.Exercicio()
             {
-                return BadRequest();
-            }
+                Id = id,
+                Nome = exercicioDto.Nome,
+                Repeticoes = exercicioDto.Repeticoes
+            };
 
-            _context.Entry(exercicios).State = EntityState.Modified;
+            _context.Entry(exercicio).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +54,7 @@ namespace LetsTrain.API.Controllers.Exercicio
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ExerciciosExists(id))
+                if (!ExercicioExists(id))
                 {
                     return NotFound();
                 }
@@ -72,34 +67,37 @@ namespace LetsTrain.API.Controllers.Exercicio
             return NoContent();
         }
 
-        // POST: api/Exercicio
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Exercicios>> PostExercicios(Exercicios exercicios)
+        public async Task<ActionResult<ExercicioDto>> PostExercicios(ExercicioDto exercicioDto)
         {
-            _context.Exercicios.Add(exercicios);
+            Model.Exercicio exercicio = new Model.Exercicio() 
+            {
+                Nome = exercicioDto.Nome,
+                Repeticoes = exercicioDto.Repeticoes,
+            };
+
+            _context.Exercicios.Add(exercicio);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetExercicios", new { id = exercicios.Id }, exercicios);
+            return CreatedAtAction("GetExercicios", new { id = exercicio.Id }, exercicioDto);
         }
 
-        // DELETE: api/Exercicio/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExercicios(int id)
         {
-            var exercicios = await _context.Exercicios.FindAsync(id);
-            if (exercicios == null)
+            var exercicio = await _context.Exercicios.FindAsync(id);
+            if (exercicio == null)
             {
                 return NotFound();
             }
 
-            _context.Exercicios.Remove(exercicios);
+            _context.Exercicios.Remove(exercicio);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ExerciciosExists(int id)
+        private bool ExercicioExists(int id)
         {
             return _context.Exercicios.Any(e => e.Id == id);
         }

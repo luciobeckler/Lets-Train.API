@@ -1,11 +1,11 @@
 ﻿namespace LetsTrain.API.Model
 {
-    public class Treinos
+    public class Treino
     {
         public int Id { get; set; }
         public string Nome { get; set; } = null!;
         public int DuracaoEmMinutos { get; set; }
 
-        public ICollection<Exercicios> Exercicios { get; set; } = null!;
+        public ICollection<Exercicio> Exercicios { get; set; } = null!;
     }
 }

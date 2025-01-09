@@ -6,10 +6,10 @@ namespace LetsTrain.API.Model
     {
         public LetsTrainDbContext(DbContextOptions<LetsTrainDbContext> options) : base(options) { }
 
-        public DbSet<Professores> Professores { get; set; } = null!;
-        public DbSet<Alunos> Alunos { get; set; } = null!;
-        public DbSet<Aulas> Aulas { get; set; } = null!;
-        public DbSet<Treinos> Treinos { get; set; } = null!;
-        public DbSet<Exercicios> Exercicios { get; set; } = null!;
+        public DbSet<Professor> Professores { get; set; } = null!;
+        public DbSet<Aluno> Alunos { get; set; } = null!;
+        public DbSet<Aula> Aulas { get; set; } = null!;
+        public DbSet<Treino> Treinos { get; set; } = null!;
+        public DbSet<Exercicio> Exercicios { get; set; } = null!;
     }
 }

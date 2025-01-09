@@ -1,6 +1,6 @@
 ﻿namespace LetsTrain.API.Model
 {
-    public class Alunos
+    public class Aluno
     {
         public int Id { get; set; }
         public string Nome { get; set; } = null!;
@@ -12,6 +12,6 @@
         public bool IsAtivo { get; set; }
         public int DiaVencimentoMatricula { get; set; }
 
-        public ICollection<Aulas> Aulas { get; set; } = null!;
+        public ICollection<Aula> Aulas { get; set; } = null!;
     }
 }

@@ -1,10 +1,8 @@
-﻿namespace LetsTrain.API.Model
+﻿namespace LetsTrain.API.Model.Dto
 {
-    public class Exercicios
+    public class ExercicioDto
     {
-        public int Id { get; set; }
         public string Nome { get; set; } = null!;
         public int Repeticoes { get; set; }
     }
-
 }
