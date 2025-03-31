@@ -1,6 +1,4 @@
-﻿using LetsTrain.API.Model.Dto;
-using LetsTrain.API.Repositories.Exercicio;
-using LetsTrain.API.Repositories.Exercicios;
+﻿using LetsTrain.API.Repositories.Exercicio;
 
 namespace LetsTrain.API.Services.Exercicio
 {
