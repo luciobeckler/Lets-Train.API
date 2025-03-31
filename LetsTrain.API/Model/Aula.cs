@@ -8,11 +8,10 @@ public class Aula
     public string Local { get; set; } = null!;
     public int? RecorrenciaEmDias { get; set; }
 
-    // Navegação
-    public ICollection<Aluno> Alunos { get; set; } = null!;
-    public Treino Treinos { get; set; } = null!;
-    public Professor Professores { get; set; } = null!;
-
-    
+    //Relacionamentos
+    public Treino Treino { get; set; }
+    public Professor Professor { get; set; }
+    public List<Aluno> Aluno { get; set; }
 }
+
 

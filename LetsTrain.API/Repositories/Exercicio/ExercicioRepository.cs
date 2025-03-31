@@ -1,5 +1,4 @@
 ﻿using LetsTrain.API.Model;
-using LetsTrain.API.Model.Dto;
 using LetsTrain.API.Repositories.Exercicio;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +15,6 @@ namespace LetsTrain.API.Repositories.Exercicios
 
         public async Task<IEnumerable<Model.Exercicio?>> GetAllAsync()
         {
-
             var result = await _context.Exercicios.ToListAsync();
             return result;
         }
@@ -46,7 +44,6 @@ namespace LetsTrain.API.Repositories.Exercicios
         public async Task<bool> ExistsAsync(int id)
         {
             bool existe = await _context.Exercicios.AnyAsync(e => e.Id == id);
-            
             return existe;
         }
     }

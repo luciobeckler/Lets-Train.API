@@ -1,6 +1,6 @@
-﻿using LetsTrain.API.Helper;
+﻿using LetsTrain.API.Dto;
+using LetsTrain.API.Helper;
 using LetsTrain.API.Model;
-using LetsTrain.API.Model.Dto;
 using LetsTrain.API.Services.Exercicio;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +42,7 @@ namespace LetsTrain.API.Controllers.Exercicio
             var exercicio = new Model.Exercicio()
             {
                 Nome = exercicioDto.Nome,
-                Repeticoes = exercicioDto.Repeticoes
+                Repeticoes = exercicioDto.Repeticoes,
             };
 
             await _service.AddAsync(exercicio);

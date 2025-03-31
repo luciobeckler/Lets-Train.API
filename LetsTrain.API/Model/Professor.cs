@@ -8,8 +8,7 @@
         public string? Graduacao { get; set; }
         public bool IsAtivo { get; set; }
 
-        // Navegação
-        public ICollection<Aula> Aulas { get; set; } = new List<Aula>();
-        public ICollection<Treino> Treinos { get; set; } = new List<Treino>();
+        public List<Treino> Treinos { get; set; } = new List<Treino>();
+        public List<Aula> Aulas { get; set; } = new List<Aula>();
     }
 }

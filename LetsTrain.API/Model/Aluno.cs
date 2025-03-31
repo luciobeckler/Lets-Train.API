@@ -12,6 +12,7 @@
         public bool IsAtivo { get; set; }
         public int DiaVencimentoMatricula { get; set; }
 
-        public ICollection<Aula> Aulas { get; set; } = null!;
+        public List<Aula> Aulas{ get; set; }
     }
+
 }

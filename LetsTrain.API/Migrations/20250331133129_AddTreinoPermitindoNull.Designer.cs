@@ -4,6 +4,7 @@ using LetsTrain.API.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTrain.API.Migrations
 {
     [DbContext(typeof(LetsTrainDbContext))]
-    partial class LetsTrainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250331133129_AddTreinoPermitindoNull")]
+    partial class AddTreinoPermitindoNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,21 +76,6 @@ namespace LetsTrain.API.Migrations
                     b.ToTable("Aulas");
                 });
 
-            modelBuilder.Entity("ExercicioTreino", b =>
-                {
-                    b.Property<int>("ExerciciosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TreinoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExerciciosId", "TreinoId");
-
-                    b.HasIndex("TreinoId");
-
-                    b.ToTable("ExercicioTreino");
-                });
-
             modelBuilder.Entity("LetsTrain.API.Model.Aluno", b =>
                 {
                     b.Property<int>("Id")
@@ -142,7 +130,12 @@ namespace LetsTrain.API.Migrations
                     b.Property<int>("Repeticoes")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TreinoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TreinoId");
 
                     b.ToTable("Exercicios");
                 });
@@ -232,19 +225,13 @@ namespace LetsTrain.API.Migrations
                     b.Navigation("Treino");
                 });
 
-            modelBuilder.Entity("ExercicioTreino", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Exercicio", b =>
                 {
-                    b.HasOne("LetsTrain.API.Model.Exercicio", null)
-                        .WithMany()
-                        .HasForeignKey("ExerciciosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("LetsTrain.API.Model.Treino", "Treino")
+                        .WithMany("Exercicios")
+                        .HasForeignKey("TreinoId");
 
-                    b.HasOne("LetsTrain.API.Model.Treino", null)
-                        .WithMany()
-                        .HasForeignKey("TreinoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Treino");
                 });
 
             modelBuilder.Entity("LetsTrain.API.Model.Treino", b =>
@@ -268,6 +255,8 @@ namespace LetsTrain.API.Migrations
             modelBuilder.Entity("LetsTrain.API.Model.Treino", b =>
                 {
                     b.Navigation("Aulas");
+
+                    b.Navigation("Exercicios");
                 });
 #pragma warning restore 612, 618
         }

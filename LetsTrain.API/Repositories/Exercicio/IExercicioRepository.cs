@@ -1,6 +1,4 @@
-﻿using LetsTrain.API.Model.Dto;
-
-namespace LetsTrain.API.Repositories.Exercicio
+﻿namespace LetsTrain.API.Repositories.Exercicio
 {
     public interface IExercicioRepository
     {

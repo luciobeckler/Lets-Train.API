@@ -4,6 +4,7 @@ using LetsTrain.API.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTrain.API.Migrations
 {
     [DbContext(typeof(LetsTrainDbContext))]
-    partial class LetsTrainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250115145838_AddProfessorTableWithTreino")]
+    partial class AddProfessorTableWithTreino
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace LetsTrain.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("AlunoAula", b =>
-                {
-                    b.Property<int>("AlunoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AulasId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AlunoId", "AulasId");
-
-                    b.HasIndex("AulasId");
-
-                    b.ToTable("AlunoAula");
-                });
 
             modelBuilder.Entity("Aula", b =>
                 {
@@ -52,79 +40,20 @@ namespace LetsTrain.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfessorId")
-                        .HasColumnType("int");
-
                     b.Property<int>("QuantMaximaAlunos")
                         .HasColumnType("int");
 
                     b.Property<int?>("RecorrenciaEmDias")
                         .HasColumnType("int");
 
-                    b.Property<int>("TreinoId")
+                    b.Property<int?>("TreinoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfessorId");
 
                     b.HasIndex("TreinoId");
 
                     b.ToTable("Aulas");
-                });
-
-            modelBuilder.Entity("ExercicioTreino", b =>
-                {
-                    b.Property<int>("ExerciciosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TreinoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExerciciosId", "TreinoId");
-
-                    b.HasIndex("TreinoId");
-
-                    b.ToTable("ExercicioTreino");
-                });
-
-            modelBuilder.Entity("LetsTrain.API.Model.Aluno", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("AlturaEmM")
-                        .HasColumnType("real");
-
-                    b.Property<int>("DiaVencimentoMatricula")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Graduacao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAtivo")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("PesoEmKg")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Telefone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Alunos");
                 });
 
             modelBuilder.Entity("LetsTrain.API.Model.Exercicio", b =>
@@ -142,7 +71,12 @@ namespace LetsTrain.API.Migrations
                     b.Property<int>("Repeticoes")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TreinoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TreinoId");
 
                     b.ToTable("Exercicios");
                 });
@@ -188,7 +122,7 @@ namespace LetsTrain.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfessorId")
+                    b.Property<int?>("ProfessorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -198,53 +132,24 @@ namespace LetsTrain.API.Migrations
                     b.ToTable("Treinos");
                 });
 
-            modelBuilder.Entity("AlunoAula", b =>
-                {
-                    b.HasOne("LetsTrain.API.Model.Aluno", null)
-                        .WithMany()
-                        .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Aula", null)
-                        .WithMany()
-                        .HasForeignKey("AulasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Aula", b =>
                 {
-                    b.HasOne("LetsTrain.API.Model.Professor", "Professor")
-                        .WithMany("Aulas")
-                        .HasForeignKey("ProfessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LetsTrain.API.Model.Treino", "Treino")
                         .WithMany("Aulas")
                         .HasForeignKey("TreinoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Professor");
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Treino");
                 });
 
-            modelBuilder.Entity("ExercicioTreino", b =>
+            modelBuilder.Entity("LetsTrain.API.Model.Exercicio", b =>
                 {
-                    b.HasOne("LetsTrain.API.Model.Exercicio", null)
-                        .WithMany()
-                        .HasForeignKey("ExerciciosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LetsTrain.API.Model.Treino", null)
-                        .WithMany()
+                    b.HasOne("LetsTrain.API.Model.Treino", "Treino")
+                        .WithMany("Exercicios")
                         .HasForeignKey("TreinoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Treino");
                 });
 
             modelBuilder.Entity("LetsTrain.API.Model.Treino", b =>
@@ -252,22 +157,21 @@ namespace LetsTrain.API.Migrations
                     b.HasOne("LetsTrain.API.Model.Professor", "Professor")
                         .WithMany("Treinos")
                         .HasForeignKey("ProfessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Professor");
                 });
 
             modelBuilder.Entity("LetsTrain.API.Model.Professor", b =>
                 {
-                    b.Navigation("Aulas");
-
                     b.Navigation("Treinos");
                 });
 
             modelBuilder.Entity("LetsTrain.API.Model.Treino", b =>
                 {
                     b.Navigation("Aulas");
+
+                    b.Navigation("Exercicios");
                 });
 #pragma warning restore 612, 618
         }
